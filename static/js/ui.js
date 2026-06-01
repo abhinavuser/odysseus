@@ -1115,7 +1115,7 @@ if (!window._odyEscExpandGuard) {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape' || e.defaultPrevented) return;
     const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    // removed early return for inputs so esc closes modals even when typing
 
     // Find the single thing to close, in priority order. The first hit wins.
     // Important: if a thinking block is open we MUST handle it ourselves and
@@ -1167,7 +1167,7 @@ if (!window._odyEscExpandGuard) {
     }
     const topModal = pickTopModal();
     if (!topModal) return;
-    const closeBtn = topModal.querySelector('.close-btn, .modal-close-btn, [data-action="close"]');
+    const closeBtn = topModal.querySelector('.close-btn, .modal-close-btn, .modal-close, [data-action="close"], #styled-confirm-cancel, #styled-prompt-cancel');
     e.stopImmediatePropagation();
     e.preventDefault();
     if (closeBtn) { try { closeBtn.click(); } catch {} }
