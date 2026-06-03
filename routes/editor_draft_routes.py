@@ -35,7 +35,7 @@ class DraftCreate(BaseModel):
     source_image_id: Optional[str] = None
     width: Optional[int] = None
     height: Optional[int] = None
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     thumbnail: Optional[str] = None
 
 
@@ -43,7 +43,7 @@ class DraftUpdate(BaseModel):
     name: Optional[str] = None
     width: Optional[int] = None
     height: Optional[int] = None
-    payload: Optional[Dict[str, Any]] = None
+    payload: Optional[dict[str, Any]] = None
     thumbnail: Optional[str] = None
 
 
@@ -53,7 +53,7 @@ def _owns(d: EditorDraft, user: Optional[str]) -> bool:
     return (d.owner or None) == user
 
 
-def _summary(d: EditorDraft) -> Dict[str, Any]:
+def _summary(d: EditorDraft) -> dict[str, Any]:
     """List-view representation — omits the bulky payload."""
     return {
         "id": d.id,
@@ -67,7 +67,7 @@ def _summary(d: EditorDraft) -> Dict[str, Any]:
     }
 
 
-def _load_payload(raw: Optional[str]) -> Dict[str, Any]:
+def _load_payload(raw: Optional[str]) -> dict[str, Any]:
     try:
         payload = json.loads(raw) if raw else {}
     except Exception:
@@ -79,7 +79,7 @@ def setup_editor_draft_routes() -> APIRouter:
     router = APIRouter(tags=["editor-drafts"])
 
     @router.get("/api/editor-drafts")
-    async def list_drafts(request: Request) -> Dict[str, List[Dict[str, Any]]]:
+    async def list_drafts(request: Request) -> dict[str, list[dict[str, Any]]]:
         user = get_current_user(request)
         db = SessionLocal()
         try:
@@ -92,7 +92,7 @@ def setup_editor_draft_routes() -> APIRouter:
             db.close()
 
     @router.get("/api/editor-drafts/{draft_id}")
-    async def get_draft(request: Request, draft_id: str) -> Dict[str, Any]:
+    async def get_draft(request: Request, draft_id: str) -> dict[str, Any]:
         user = get_current_user(request)
         db = SessionLocal()
         try:
@@ -109,7 +109,7 @@ def setup_editor_draft_routes() -> APIRouter:
             db.close()
 
     @router.post("/api/editor-drafts")
-    async def create_draft(request: Request, body: DraftCreate) -> Dict[str, Any]:
+    async def create_draft(request: Request, body: DraftCreate) -> dict[str, Any]:
         user = get_current_user(request)
         db = SessionLocal()
         try:
@@ -135,7 +135,7 @@ def setup_editor_draft_routes() -> APIRouter:
             db.close()
 
     @router.put("/api/editor-drafts/{draft_id}")
-    async def update_draft(request: Request, draft_id: str, body: DraftUpdate) -> Dict[str, Any]:
+    async def update_draft(request: Request, draft_id: str, body: DraftUpdate) -> dict[str, Any]:
         user = get_current_user(request)
         db = SessionLocal()
         try:
@@ -167,7 +167,7 @@ def setup_editor_draft_routes() -> APIRouter:
             db.close()
 
     @router.delete("/api/editor-drafts/{draft_id}")
-    async def delete_draft(request: Request, draft_id: str) -> Dict[str, str]:
+    async def delete_draft(request: Request, draft_id: str) -> dict[str, str]:
         user = get_current_user(request)
         db = SessionLocal()
         try:

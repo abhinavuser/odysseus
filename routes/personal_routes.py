@@ -31,7 +31,7 @@ def _personal_upload_dir_for_owner(owner: str | None) -> str:
     return upload_dir
 
 
-def _unique_personal_upload_path(upload_dir: str, original_name: str | None) -> Tuple[str, str, str]:
+def _unique_personal_upload_path(upload_dir: str, original_name: str | None) -> tuple[str, str, str]:
     """Build a collision-resistant upload path while preserving a display name."""
     safe_name = secure_filename(os.path.basename(original_name or "upload"))
     if not safe_name or safe_name.startswith("."):
@@ -192,7 +192,7 @@ def setup_personal_routes(personal_docs_manager, rag_manager, rag_available):
             raise HTTPException(500, f"Failed to remove directory: {str(e)}")
     
     @router.post("/upload")
-    async def upload_files_to_rag(request: Request, files: List[UploadFile] = File(...)):
+    async def upload_files_to_rag(request: Request, files: list[UploadFile] = File(...)):
         """Upload files directly into RAG. Supports text and PDF."""
         user = get_current_user(request)
         rag = _rag()

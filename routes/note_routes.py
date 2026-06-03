@@ -56,7 +56,7 @@ class NoteUpdate(BaseModel):
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _note_to_dict(note: Note) -> Dict[str, Any]:
+def _note_to_dict(note: Note) -> dict[str, Any]:
     items = None
     if note.items:
         try:

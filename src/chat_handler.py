@@ -95,9 +95,9 @@ class ChatHandler:
     async def preprocess_message(
         self,
         message: str,
-        att_ids: List[str],
+        att_ids: list[str],
         sess,
-        auto_opened_docs: Optional[List[Dict[str, Any]]] = None,
+        auto_opened_docs: Optional[list[dict[str, Any]]] = None,
     ) -> tuple:
         """
         Common preprocessing for both chat endpoints.
@@ -109,11 +109,11 @@ class ChatHandler:
         new doc so the caller can announce it to the frontend before streaming.
         """
         enhanced_message = message
-        attachment_meta: List[Dict[str, Any]] = []
+        attachment_meta: list[dict[str, Any]] = []
 
         # Extract URLs and process YouTube transcripts
         urls = extract_urls(enhanced_message)
-        youtube_transcripts: List[str] = []
+        youtube_transcripts: list[str] = []
 
         has_youtube = False
         for url in urls:
@@ -152,7 +152,7 @@ class ChatHandler:
 
         # Resolve uploads once with the session owner. Attachment IDs are
         # bearer-like references; never trust them without an owner check.
-        files_by_id: Dict[str, Dict] = {}
+        files_by_id: dict[str, dict] = {}
         owner = getattr(sess, "owner", None)
         if att_ids:
             for att_id in att_ids:

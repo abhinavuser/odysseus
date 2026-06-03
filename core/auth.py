@@ -71,8 +71,8 @@ class AuthManager:
     def __init__(self, auth_path: str = DEFAULT_AUTH_PATH):
         self.auth_path = auth_path
         self._sessions_path = os.path.join(os.path.dirname(auth_path), "sessions.json")
-        self._config: Dict[str, Any] = {}
-        self._sessions: Dict[str, Dict[str, Any]] = {}  # token -> {username, expiry}
+        self._config: dict[str, Any] = {}
+        self._sessions: dict[str, dict[str, Any]] = {}  # token -> {username, expiry}
         # Guards mutations of self._sessions and the on-disk sessions.json.
         # Validate/create/revoke run concurrently from the FastAPI threadpool.
         self._sessions_lock = threading.RLock()
@@ -87,7 +87,7 @@ class AuthManager:
     def _load(self):
         try:
             if os.path.exists(self.auth_path):
-                with open(self.auth_path, "r", encoding="utf-8") as f:
+                with open(self.auth_path, encoding="utf-8") as f:
                     self._config = json.load(f)
                 # Normalize all stored usernames to lowercase so they match
                 # the .strip().lower() applied at login/verify time. Fixes
@@ -110,7 +110,7 @@ class AuthManager:
         """Load persisted session tokens from disk, pruning expired ones."""
         try:
             if os.path.exists(self._sessions_path):
-                with open(self._sessions_path, "r", encoding="utf-8") as f:
+                with open(self._sessions_path, encoding="utf-8") as f:
                     data = json.load(f)
                 now = time.time()
                 self._sessions = {k: v for k, v in data.items() if v.get("expiry", 0) > now}
@@ -163,7 +163,7 @@ class AuthManager:
         _atomic_write_json(self.auth_path, self._config, indent=2)
 
     @property
-    def users(self) -> Dict[str, Any]:
+    def users(self) -> dict[str, Any]:
         return self._config.get("users", {})
 
     @property
@@ -281,13 +281,13 @@ class AuthManager:
     def is_admin(self, username: str) -> bool:
         return self.users.get(username, {}).get("is_admin", False)
 
-    def list_users(self) -> List[Dict[str, Any]]:
+    def list_users(self) -> list[dict[str, Any]]:
         return [
             {"username": u, "is_admin": d.get("is_admin", False), "privileges": self.get_privileges(u)}
             for u, d in self.users.items()
         ]
 
-    def get_privileges(self, username: str) -> Dict[str, Any]:
+    def get_privileges(self, username: str) -> dict[str, Any]:
         """Get privileges for a user. Admins get all privileges."""
         user = self.users.get(username, {})
         if user.get("is_admin"):
@@ -296,7 +296,7 @@ class AuthManager:
         stored = user.get("privileges", {})
         return {**DEFAULT_PRIVILEGES, **stored}
 
-    def set_privileges(self, username: str, privileges: Dict[str, Any]) -> bool:
+    def set_privileges(self, username: str, privileges: dict[str, Any]) -> bool:
         """Update privileges for a user. Can't modify admin privileges."""
         username = username.strip().lower()
         if username not in self.users:
@@ -499,7 +499,7 @@ class AuthManager:
                 self._save_sessions()
         return revoked
 
-    def status(self, token: Optional[str]) -> Dict[str, Any]:
+    def status(self, token: Optional[str]) -> dict[str, Any]:
         username = self.get_username_for_token(token)
         authenticated = username is not None
         result = {

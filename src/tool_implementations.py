@@ -215,7 +215,7 @@ def _coerce_email_document_content(existing: str, incoming: str) -> str:
     return header.rstrip() + "\n---\n" + body
 
 
-async def do_create_document(content_block: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_create_document(content_block: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Create a new document. Supports two formats:
       1) Line-based: line 1 = title, line 2 (optional) = language, rest = content
       2) XML-like tags: <title>...</title><language>...</language><content>...</content>
@@ -332,7 +332,7 @@ async def do_create_document(content_block: str, session_id: Optional[str] = Non
         db.close()
 
 
-async def do_update_document(content: str, doc_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_update_document(content: str, doc_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Update an existing document. Content = full new document text."""
     import uuid
     from src.database import SessionLocal, Document, DocumentVersion
@@ -396,7 +396,7 @@ def parse_edit_blocks(content: str) -> list:
     return edits
 
 
-async def do_edit_document(content: str, doc_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_edit_document(content: str, doc_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Apply targeted FIND/REPLACE edits to an existing document."""
     import uuid
     from src.database import SessionLocal, Document, DocumentVersion
@@ -504,7 +504,7 @@ def parse_suggest_blocks(content: str) -> list:
     return suggestions
 
 
-async def do_suggest_document(content: str, doc_id: str = None, owner: Optional[str] = None) -> Dict:
+async def do_suggest_document(content: str, doc_id: str = None, owner: Optional[str] = None) -> dict:
     """Create inline suggestions for the active document WITHOUT modifying it."""
     from src.database import SessionLocal, Document
 
@@ -547,7 +547,7 @@ async def do_suggest_document(content: str, doc_id: str = None, owner: Optional[
 # Search chats
 # ---------------------------------------------------------------------------
 
-async def do_search_chats(query: str, limit: int = 20, owner: str | None = None) -> Dict:
+async def do_search_chats(query: str, limit: int = 20, owner: str | None = None) -> dict:
     """Search past chat messages for the calling user's sessions only.
 
     Without an owner filter this used to leak EVERY user's chat history
@@ -619,7 +619,7 @@ async def do_search_chats(query: str, limit: int = 20, owner: str | None = None)
 # Skills management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_skills(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_skills(content: str, owner: Optional[str] = None) -> dict:
     """Handle manage_skills tool calls.
 
     SKILL.md-backed CRUD with progressive disclosure (Hermes-style). Actions:
@@ -828,7 +828,7 @@ async def do_manage_skills(content: str, owner: Optional[str] = None) -> Dict:
     }
 
 
-def _skill_dump(sk) -> Dict:
+def _skill_dump(sk) -> dict:
     """Translate a parsed Skill back into the kwargs `update_skill` expects."""
     return {
         "name": sk.name,
@@ -856,7 +856,7 @@ def _skill_dump(sk) -> Dict:
 # Task management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_tasks(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_tasks(content: str, owner: Optional[str] = None) -> dict:
     """Handle manage_tasks tool calls: CRUD on scheduled tasks."""
     import uuid as _uuid
     from core.database import SessionLocal, ScheduledTask
@@ -1051,7 +1051,7 @@ async def do_manage_tasks(content: str, owner: Optional[str] = None) -> Dict:
 # Endpoint management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_endpoints(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_endpoints(content: str, owner: Optional[str] = None) -> dict:
     """Manage model endpoints: list, add, delete, enable, disable."""
     from core.database import SessionLocal, ModelEndpoint
     try:
@@ -1116,7 +1116,7 @@ async def do_manage_endpoints(content: str, owner: Optional[str] = None) -> Dict
 # MCP server management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_mcp(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_mcp(content: str, owner: Optional[str] = None) -> dict:
     """Manage MCP servers: list, add, delete, enable, disable, reconnect."""
     try:
         args = _parse_tool_args(content)
@@ -1265,7 +1265,7 @@ async def do_manage_mcp(content: str, owner: Optional[str] = None) -> Dict:
 # Webhook management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_webhooks(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_webhooks(content: str, owner: Optional[str] = None) -> dict:
     """Manage webhooks: list, add, delete, enable, disable, test."""
     from core.database import SessionLocal
     try:
@@ -1337,7 +1337,7 @@ async def do_manage_webhooks(content: str, owner: Optional[str] = None) -> Dict:
 # API token management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_tokens(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_tokens(content: str, owner: Optional[str] = None) -> dict:
     """Manage API tokens: list, create, delete."""
     from core.database import SessionLocal, ApiToken
     try:
@@ -1391,7 +1391,7 @@ async def do_manage_tokens(content: str, owner: Optional[str] = None) -> Dict:
 # Document management tool (delete, list, organize)
 # ---------------------------------------------------------------------------
 
-async def do_manage_documents(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_documents(content: str, owner: Optional[str] = None) -> dict:
     """Manage documents: list, read/view/open, delete, tidy.
 
     Output format mirrors `manage_session`: list rows include a
@@ -1513,7 +1513,7 @@ async def do_manage_documents(content: str, owner: Optional[str] = None) -> Dict
 # Settings/preferences management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_settings(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_settings(content: str, owner: Optional[str] = None) -> dict:
     """Manage user settings and preferences."""
     try:
         args = _parse_tool_args(content)
@@ -1782,7 +1782,7 @@ async def do_manage_settings(content: str, owner: Optional[str] = None) -> Dict:
 # API call tool
 # ---------------------------------------------------------------------------
 
-async def do_api_call(content: str) -> Dict:
+async def do_api_call(content: str) -> dict:
     """Execute an API call to a registered integration."""
     from src.integrations import execute_api_call, load_integrations
     try:
@@ -1823,7 +1823,7 @@ async def do_api_call(content: str) -> Dict:
 # Notes / checklists management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_notes(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_notes(content: str, owner: Optional[str] = None) -> dict:
     """Handle manage_notes tool calls: CRUD on notes and checklists."""
     import uuid as _uuid
     from core.database import SessionLocal, Note
@@ -2039,7 +2039,7 @@ async def do_manage_notes(content: str, owner: Optional[str] = None) -> Dict:
 # Calendar tool — CalDAV-backed event CRUD
 # ---------------------------------------------------------------------------
 
-async def do_manage_calendar(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_calendar(content: str, owner: Optional[str] = None) -> dict:
     """Handle manage_calendar tool calls: list/create/update/delete calendar events (local SQLite)."""
     from datetime import datetime, timedelta
     from core.database import SessionLocal, CalendarCal, CalendarEvent, Note
@@ -2482,7 +2482,7 @@ async def do_manage_calendar(content: str, owner: Optional[str] = None) -> Dict:
 _COOKBOOK_BASE = "http://localhost:7000"
 
 
-def _internal_headers(owner: Optional[str] = None) -> Dict[str, str]:
+def _internal_headers(owner: Optional[str] = None) -> dict[str, str]:
     from core.middleware import INTERNAL_TOOL_HEADER, INTERNAL_TOOL_TOKEN
     headers = {INTERNAL_TOOL_HEADER: INTERNAL_TOOL_TOKEN}
     if owner:
@@ -2490,7 +2490,7 @@ def _internal_headers(owner: Optional[str] = None) -> Dict[str, str]:
     return headers
 
 
-async def _cookbook_servers() -> Dict[str, Any]:
+async def _cookbook_servers() -> dict[str, Any]:
     """Return the cookbook's configured servers + the currently-selected
     default host. Shape: {default_host, hosts: [{host, platform, env, envPath}]}.
     The agent uses this to route downloads/serves to the right machine
@@ -2548,7 +2548,7 @@ async def _resolve_cookbook_host(name_or_host: str) -> str:
     return val
 
 
-async def _cookbook_env_for_host(host: str) -> Dict[str, Any]:
+async def _cookbook_env_for_host(host: str) -> dict[str, Any]:
     """Resolve env_prefix / gpus / platform / hf_token / ssh_port for a
     given host by looking it up in cookbook_state.env. The user
     configures these per-host in the Cookbook UI; without them, raw
@@ -2561,7 +2561,7 @@ async def _cookbook_env_for_host(host: str) -> Dict[str, Any]:
     """
     import httpx
     headers = _internal_headers()
-    state: Dict[str, Any] = {}
+    state: dict[str, Any] = {}
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             r = await client.get(f"{_COOKBOOK_BASE}/api/cookbook/state", headers=headers)
@@ -2576,7 +2576,7 @@ async def _cookbook_env_for_host(host: str) -> Dict[str, Any]:
         return {}
 
     # Per-host entry takes precedence over top-level.
-    per_host: Dict[str, Any] = {}
+    per_host: dict[str, Any] = {}
     for s in (env_root.get("servers") or []):
         if isinstance(s, dict) and (s.get("host") or "") == (host or ""):
             per_host = s
@@ -2718,7 +2718,7 @@ _APP_API_BLOCKLIST_METHOD_PATH = (
 )
 
 
-async def do_app_api(content: str, owner: Optional[str] = None) -> Dict:
+async def do_app_api(content: str, owner: Optional[str] = None) -> dict:
     """Generic loopback to any internal Odysseus API endpoint. Lets the
     agent reach the full UI-button surface (cookbook, email, notes,
     calendar, skills, sessions, gallery, research, etc.) without us
@@ -2756,7 +2756,7 @@ async def do_app_api(content: str, owner: Optional[str] = None) -> Dict:
                 data = resp.json()
         except Exception as e:
             return {"error": f"OpenAPI fetch failed: {e}", "exit_code": 1}
-        rows: List[Dict[str, Any]] = []
+        rows: list[dict[str, Any]] = []
         for path, methods in (data.get("paths") or {}).items():
             if not isinstance(methods, dict):
                 continue
@@ -2875,7 +2875,7 @@ _MODEL_PROCESS_PATTERNS = [
 ]
 
 
-def _cookbook_apply_retry_suggestion(cmd: str, suggestion: Dict[str, Any]) -> str:
+def _cookbook_apply_retry_suggestion(cmd: str, suggestion: dict[str, Any]) -> str:
     """Apply a structured Cookbook diagnosis suggestion to a serve command."""
     if not cmd or not suggestion:
         return cmd
@@ -2902,7 +2902,7 @@ def _cookbook_apply_retry_suggestion(cmd: str, suggestion: Dict[str, Any]) -> st
     return cmd
 
 
-def _scan_running_model_processes() -> List[Dict[str, Any]]:
+def _scan_running_model_processes() -> list[dict[str, Any]]:
     """Scan /proc for running model server processes. Linux-only; returns
     [] on other platforms or if /proc isn't accessible. Each match returns
     a dict shaped like a cookbook task so the caller can merge cleanly.
@@ -2910,7 +2910,7 @@ def _scan_running_model_processes() -> List[Dict[str, Any]]:
     import os
     if not os.path.isdir("/proc"):
         return []
-    out: List[Dict[str, Any]] = []
+    out: list[dict[str, Any]] = []
     seen_keys = set()
     try:
         for pid_dir in os.listdir("/proc"):
@@ -2961,7 +2961,7 @@ def _scan_running_model_processes() -> List[Dict[str, Any]]:
     return out
 
 
-async def do_download_model(content: str, owner: Optional[str] = None) -> Dict:
+async def do_download_model(content: str, owner: Optional[str] = None) -> dict:
     """Download a HuggingFace model via the cookbook API."""
     import httpx
     try:
@@ -3015,7 +3015,7 @@ async def do_download_model(content: str, owner: Optional[str] = None) -> Dict:
         return {"error": str(e), "exit_code": 1}
 
 
-async def do_serve_model(content: str, owner: Optional[str] = None) -> Dict:
+async def do_serve_model(content: str, owner: Optional[str] = None) -> dict:
     """Start serving a model via the cookbook API."""
     import httpx
     try:
@@ -3064,7 +3064,7 @@ async def do_serve_model(content: str, owner: Optional[str] = None) -> Dict:
         return {"error": str(e), "exit_code": 1}
 
 
-async def do_list_served_models(content: str, owner: Optional[str] = None) -> Dict:
+async def do_list_served_models(content: str, owner: Optional[str] = None) -> dict:
     """List running model servers — merges cookbook-tracked tasks with
     a /proc scan for externally-launched LLM/diffusion processes
     (vLLM, sglang, llama.cpp, Ollama, ComfyUI, A1111, Fooocus, etc.)."""
@@ -3073,7 +3073,7 @@ async def do_list_served_models(content: str, owner: Optional[str] = None) -> Di
 
     # Cookbook-tracked tasks (best-effort; don't fail the whole call if
     # this is unreachable).
-    cookbook_tasks: List[Dict[str, Any]] = []
+    cookbook_tasks: list[dict[str, Any]] = []
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.get(f"{_COOKBOOK_BASE}/api/cookbook/tasks/status",
@@ -3085,7 +3085,7 @@ async def do_list_served_models(content: str, owner: Optional[str] = None) -> Di
     # Local process scan — runs in a worker thread so it doesn't block.
     external = await asyncio.to_thread(_scan_running_model_processes)
 
-    merged: List[Dict[str, Any]] = []
+    merged: list[dict[str, Any]] = []
     merged.extend(cookbook_tasks)
     # Dedupe: if a process's PID is already mentioned by a cookbook task
     # (cookbook may track the PID via session_id), skip it.
@@ -3145,7 +3145,7 @@ async def do_list_served_models(content: str, owner: Optional[str] = None) -> Di
 
 
 async def _cookbook_kill_session(session_id: str, *, remote_host: str = "",
-                                 ssh_port: str = "", verb: str = "Stopped") -> Dict:
+                                 ssh_port: str = "", verb: str = "Stopped") -> dict:
     """Kill a cookbook tmux session — remote-aware — AND mark the task
     stopped in cookbook_state.json. Shared by stop_served_model and
     cancel_download so both behave identically.
@@ -3162,7 +3162,7 @@ async def _cookbook_kill_session(session_id: str, *, remote_host: str = "",
     sport = ssh_port or ""
 
     # Look up the task's host + confirm it exists in state.
-    state: Dict[str, Any] = {}
+    state: dict[str, Any] = {}
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             resp = await client.get(f"{_COOKBOOK_BASE}/api/cookbook/state", headers=headers)
@@ -3226,7 +3226,7 @@ async def _cookbook_kill_session(session_id: str, *, remote_host: str = "",
         return {"error": str(e), "exit_code": 1}
 
 
-async def do_stop_served_model(content: str, owner: Optional[str] = None) -> Dict:
+async def do_stop_served_model(content: str, owner: Optional[str] = None) -> dict:
     """Stop a running model server by killing its tmux session (remote-aware)."""
     try:
         args = _parse_tool_args(content)
@@ -3243,7 +3243,7 @@ async def do_stop_served_model(content: str, owner: Optional[str] = None) -> Dic
     )
 
 
-async def do_list_downloads(content: str, owner: Optional[str] = None) -> Dict:
+async def do_list_downloads(content: str, owner: Optional[str] = None) -> dict:
     """List in-flight model downloads (filters /api/cookbook/tasks/status to type=download)."""
     import httpx
     try:
@@ -3266,7 +3266,7 @@ async def do_list_downloads(content: str, owner: Optional[str] = None) -> Dict:
         return {"error": str(e), "exit_code": 1}
 
 
-async def do_cancel_download(content: str, owner: Optional[str] = None) -> Dict:
+async def do_cancel_download(content: str, owner: Optional[str] = None) -> dict:
     """Cancel a model download by killing its tmux session (remote-aware)."""
     try:
         args = _parse_tool_args(content)
@@ -3283,7 +3283,7 @@ async def do_cancel_download(content: str, owner: Optional[str] = None) -> Dict:
     )
 
 
-async def do_search_hf_models(content: str, owner: Optional[str] = None) -> Dict:
+async def do_search_hf_models(content: str, owner: Optional[str] = None) -> dict:
     """Search HuggingFace via the cookbook /api/cookbook/hf-latest endpoint."""
     import httpx
     try:
@@ -3292,7 +3292,7 @@ async def do_search_hf_models(content: str, owner: Optional[str] = None) -> Dict
         return {"error": "Invalid JSON arguments", "exit_code": 1}
     query = args.get("query", "") or args.get("search", "")
     limit = args.get("limit", 10)
-    params: Dict[str, str] = {}
+    params: dict[str, str] = {}
     if query:
         params["search"] = query
     if limit:
@@ -3325,7 +3325,7 @@ async def do_search_hf_models(content: str, owner: Optional[str] = None) -> Dict
         return {"error": str(e), "exit_code": 1}
 
 
-async def do_adopt_served_model(content: str, owner: Optional[str] = None) -> Dict:
+async def do_adopt_served_model(content: str, owner: Optional[str] = None) -> dict:
     """Register an externally-launched model server (bash + tmux + ssh, or
     anything else) into the Cookbook so it appears in list_served_models,
     can be stopped via stop_served_model, and is added to the user's
@@ -3474,7 +3474,7 @@ async def do_adopt_served_model(content: str, owner: Optional[str] = None) -> Di
     }
 
 
-async def do_list_cookbook_servers(content: str, owner: Optional[str] = None) -> Dict:
+async def do_list_cookbook_servers(content: str, owner: Optional[str] = None) -> dict:
     """List the cookbook's configured servers and which one is the
     current default. Use this to decide where to download/serve a
     model, or to show the user options when the target host is
@@ -3498,7 +3498,7 @@ async def do_list_cookbook_servers(content: str, owner: Optional[str] = None) ->
     return {"output": "\n".join(lines), "servers": hosts, "default_host": default, "exit_code": 0}
 
 
-async def do_list_serve_presets(content: str, owner: Optional[str] = None) -> Dict:
+async def do_list_serve_presets(content: str, owner: Optional[str] = None) -> dict:
     """List saved serve presets from cookbook_state.json. Each preset
     is a launch template: name, model, host, port, cmd. Use this to
     discover what the user has previously configured so you can
@@ -3538,7 +3538,7 @@ async def do_list_serve_presets(content: str, owner: Optional[str] = None) -> Di
     return {"output": "\n".join(lines), "presets": presets, "exit_code": 0}
 
 
-async def do_serve_preset(content: str, owner: Optional[str] = None) -> Dict:
+async def do_serve_preset(content: str, owner: Optional[str] = None) -> dict:
     """Launch a saved serve preset by name. Resolves the preset's
     cmd + host + model from cookbook_state.json, then calls the
     standard model/serve endpoint. Saves the agent from having to
@@ -3583,7 +3583,7 @@ async def do_serve_preset(content: str, owner: Optional[str] = None) -> Dict:
     if not repo_id or not cmd:
         return {"error": f"Preset {chosen.get('name')!r} is missing model or cmd — can't launch.", "exit_code": 1}
 
-    payload: Dict[str, Any] = {"repo_id": repo_id, "cmd": cmd}
+    payload: dict[str, Any] = {"repo_id": repo_id, "cmd": cmd}
     if host:
         payload["remote_host"] = host
     # Resolve per-host env settings the same way the UI does — pulls
@@ -3614,14 +3614,14 @@ async def do_serve_preset(content: str, owner: Optional[str] = None) -> Dict:
         return {"error": str(e), "exit_code": 1}
 
 
-async def do_list_cached_models(content: str, owner: Optional[str] = None) -> Dict:
+async def do_list_cached_models(content: str, owner: Optional[str] = None) -> dict:
     """List models already cached locally (or on a remote host)."""
     import httpx
     try:
         args = _parse_tool_args(content) if content.strip() else {}
     except ValueError:
         return {"error": "Invalid JSON arguments", "exit_code": 1}
-    params: Dict[str, str] = {}
+    params: dict[str, str] = {}
     raw_host = (args.get("host") or "").strip()
     host = await _resolve_cookbook_host(raw_host) if raw_host else ""
     if host:
@@ -3682,7 +3682,7 @@ async def do_list_cached_models(content: str, owner: Optional[str] = None) -> Di
 
 # ── Gallery tools ──
 
-async def do_edit_image(content: str, owner: Optional[str] = None) -> Dict:
+async def do_edit_image(content: str, owner: Optional[str] = None) -> dict:
     """Edit a gallery image (upscale, rembg, inpaint, harmonize)."""
     import httpx
     try:
@@ -3711,7 +3711,7 @@ async def do_edit_image(content: str, owner: Optional[str] = None) -> Dict:
 
 # ── Research tools ──
 
-async def do_manage_research(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_research(content: str, owner: Optional[str] = None) -> dict:
     """List, read/open, or delete saved deep-research results from the Library.
     Args (JSON): {"action": "list|read|delete", "id": "<id>", "search": "..."}.
     Research is stored as data/deep_research/<id>.json (query, summary, sources)."""
@@ -3789,7 +3789,7 @@ async def do_manage_research(content: str, owner: Optional[str] = None) -> Dict:
     return {"output": f"Research library ({len(items)} item{'s' if len(items) != 1 else ''}):\n{rows}", "exit_code": 0}
 
 
-async def do_trigger_research(content: str, owner: Optional[str] = None) -> Dict:
+async def do_trigger_research(content: str, owner: Optional[str] = None) -> dict:
     """Start a live deep-research job that appears in the Deep Research
     sidebar. Hits /api/research/start (the same path the sidebar's
     'Research' button uses) so the session is discoverable + streamable
@@ -3802,7 +3802,7 @@ async def do_trigger_research(content: str, owner: Optional[str] = None) -> Dict
     topic = args.get("topic", "") or args.get("query", "")
     if not topic:
         return {"error": "topic (or query) is required", "exit_code": 1}
-    payload: Dict[str, Any] = {"query": topic}
+    payload: dict[str, Any] = {"query": topic}
     # Optional knobs the research panel supports.
     if args.get("max_rounds") is not None:
         try: payload["max_rounds"] = int(args["max_rounds"])
@@ -3840,7 +3840,7 @@ async def do_trigger_research(content: str, owner: Optional[str] = None) -> Dict
 
 # ── Contact tools ──
 
-async def do_resolve_contact(content: str, owner: Optional[str] = None) -> Dict:
+async def do_resolve_contact(content: str, owner: Optional[str] = None) -> dict:
     """Look up a contact by name. Searches: CardDAV -> email history -> memory."""
     import httpx
     try:
@@ -3894,7 +3894,7 @@ async def do_resolve_contact(content: str, owner: Optional[str] = None) -> Dict:
     return {"output": "\n".join(lines), "exit_code": 0}
 
 
-async def do_manage_contact(content: str, owner: Optional[str] = None) -> Dict:
+async def do_manage_contact(content: str, owner: Optional[str] = None) -> dict:
     """Add / update / delete / list CardDAV contacts. Calls the contacts
     helpers IN-PROCESS rather than over HTTP — a server-side httpx call to
     /api/contacts/* carries no session cookie and would be rejected by
@@ -3967,7 +3967,7 @@ async def do_manage_contact(content: str, owner: Optional[str] = None) -> Dict:
 
 # ── Vaultwarden / Bitwarden CLI tools ──
 
-def _load_vault_config() -> Dict:
+def _load_vault_config() -> dict:
     """Load Vaultwarden config from data/vault.json."""
     from pathlib import Path
     p = Path("data/vault.json")
@@ -3999,7 +3999,7 @@ async def _run_bw(args: list, session: Optional[str] = None, input_text: Optiona
     return stdout.decode(errors="replace").strip(), stderr.decode(errors="replace").strip(), proc.returncode
 
 
-async def do_vault_search(content: str, owner: Optional[str] = None) -> Dict:
+async def do_vault_search(content: str, owner: Optional[str] = None) -> dict:
     """Search the vault by keyword. Returns matching item names + URLs, NO passwords."""
     try:
         args = _parse_tool_args(content)
@@ -4044,7 +4044,7 @@ async def do_vault_search(content: str, owner: Optional[str] = None) -> Dict:
     return {"output": "\n".join(lines), "exit_code": 0}
 
 
-async def do_vault_get(content: str, owner: Optional[str] = None) -> Dict:
+async def do_vault_get(content: str, owner: Optional[str] = None) -> dict:
     """Retrieve a full vault entry (including password) by item ID. Logs access to assistant chat."""
     try:
         args = _parse_tool_args(content)
@@ -4102,7 +4102,7 @@ async def do_vault_get(content: str, owner: Optional[str] = None) -> Dict:
     return {"output": "\n".join(output), "exit_code": 0}
 
 
-async def do_vault_unlock(content: str, owner: Optional[str] = None) -> Dict:
+async def do_vault_unlock(content: str, owner: Optional[str] = None) -> dict:
     """Unlock the vault using a master password. Stores the resulting session key."""
     try:
         args = _parse_tool_args(content)

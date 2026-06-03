@@ -71,7 +71,7 @@ def _endpoint_enabled_models(ep) -> list:
 
 
 # Cache for Tailscale hostname → IP resolution
-_tailscale_cache: Dict[str, Optional[str]] = {}
+_tailscale_cache: dict[str, Optional[str]] = {}
 
 
 def _resolve_tailscale_host(hostname: str) -> Optional[str]:
@@ -185,10 +185,10 @@ def build_models_url(base: str) -> str:
     return base + "/models"
 
 
-def build_headers(api_key: Optional[str], base: str) -> Dict[str, str]:
+def build_headers(api_key: Optional[str], base: str) -> dict[str, str]:
     """Build auth headers for an endpoint."""
     provider = _detect_provider(base)
-    headers: Dict[str, str] = {}
+    headers: dict[str, str] = {}
     if provider == "anthropic":
         if api_key:
             headers["x-api-key"] = api_key
@@ -206,9 +206,9 @@ def resolve_endpoint(
     setting_prefix: str,
     fallback_url: Optional[str] = None,
     fallback_model: Optional[str] = None,
-    fallback_headers: Optional[Dict] = None,
+    fallback_headers: Optional[dict] = None,
     owner: Optional[str] = None,
-) -> Tuple[Optional[str], Optional[str], Optional[Dict]]:
+) -> tuple[Optional[str], Optional[str], Optional[dict]]:
     """Resolve an endpoint/model from settings, with fallback.
 
     Args:
@@ -296,7 +296,7 @@ def resolve_endpoint(
 
 def resolve_endpoint_by_id(
     ep_id: str, model: Optional[str] = None, owner: Optional[str] = None
-) -> Optional[Tuple[str, str, Dict]]:
+) -> Optional[tuple[str, str, dict]]:
     """Resolve a specific endpoint id (+ optional model) to (chat_url, model, headers).
 
     Returns None if the endpoint doesn't exist or is disabled. Used to turn

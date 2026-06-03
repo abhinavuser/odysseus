@@ -1,4 +1,3 @@
-
 import json
 import logging
 import os
@@ -10,7 +9,7 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-def tokenize(text: str) -> List[str]:
+def tokenize(text: str) -> list[str]:
     """Simple tokenizer that splits on whitespace and removes punctuation."""
     return [cleaned for word in text.split() if (cleaned := word.strip('.,!?";'))]
 
@@ -37,7 +36,7 @@ class MemoryManager:
         self.memory_file = os.path.join(data_dir, "memory.json")
         self.ensure_file_exists()
         
-    def extract_memory_from_chat(self, chat_history: List[Dict], session_id: str = None) -> List[Dict]:
+    def extract_memory_from_chat(self, chat_history: list[dict], session_id: str = None) -> list[dict]:
         """
         Extract memory entries from chat history as a fallback when LLM fails.
         
@@ -82,7 +81,7 @@ class MemoryManager:
                         
         return memories
         
-    def process_inline_memory_command(self, message: str) -> Tuple[bool, str]:
+    def process_inline_memory_command(self, message: str) -> tuple[bool, str]:
         """
         Check if a message is an inline memory command (e.g. "remember: X").
         
@@ -109,13 +108,13 @@ class MemoryManager:
             with open(self.memory_file, 'w', encoding='utf-8') as f:
                 json.dump([], f, ensure_ascii=False, indent=2)
     
-    def load_all(self) -> List[Dict]:
+    def load_all(self) -> list[dict]:
         """Load all memory entries from JSON file (unfiltered)."""
         if not os.path.exists(self.memory_file):
             return []
 
         try:
-            with open(self.memory_file, "r", encoding="utf-8") as f:
+            with open(self.memory_file, encoding="utf-8") as f:
                 data = json.load(f)
                 if isinstance(data, list):
                     return self._validate_entries(data)
@@ -125,7 +124,7 @@ class MemoryManager:
 
         return []
 
-    def load(self, owner: str = None) -> List[Dict]:
+    def load(self, owner: str = None) -> list[dict]:
         """Load memory entries, filtered by owner."""
         entries = self.load_all()
         if owner is None:
@@ -144,7 +143,7 @@ class MemoryManager:
             self.save(entries)
             logger.info("Claimed %d ownerless memories for %s", sum(1 for e in entries if e.get("owner") == owner), owner)
     
-    def _validate_entries(self, entries: List[Dict]) -> List[Dict]:
+    def _validate_entries(self, entries: list[dict]) -> list[dict]:
         """Ensure all entries have required fields."""
         validated = []
         for entry in entries:
@@ -159,7 +158,7 @@ class MemoryManager:
             validated.append(entry)
         return validated
     
-    def _migrate_from_legacy(self) -> List[Dict]:
+    def _migrate_from_legacy(self) -> list[dict]:
         """Migrate from old text format to JSON if needed."""
         legacy_path = os.path.join(os.path.dirname(self.memory_file), "memory.txt")
         if not os.path.exists(legacy_path):
@@ -167,7 +166,7 @@ class MemoryManager:
             
         logger.info("Converting legacy memory.txt to new JSON format")
         try:
-            with open(legacy_path, "r", encoding="utf-8") as f:
+            with open(legacy_path, encoding="utf-8") as f:
                 lines = [ln.strip() for ln in f.readlines() if ln.strip()]
             
             entries = []
@@ -186,7 +185,7 @@ class MemoryManager:
             logger.error("Failed to convert legacy memory: %s", e)
             return []
     
-    def save(self, entries: List[Dict]):
+    def save(self, entries: list[dict]):
         """Save memory entries to JSON file."""
         # Validate entries before saving
         for entry in entries:
@@ -205,7 +204,7 @@ class MemoryManager:
             json.dump(entries, f, ensure_ascii=False, indent=2)
         os.replace(tmp_file, self.memory_file)
     
-    def add_entry(self, text: str, source: str = "user", category: str = "fact", owner: str = None) -> Dict:
+    def add_entry(self, text: str, source: str = "user", category: str = "fact", owner: str = None) -> dict:
         """Add a new memory entry."""
         if not text.strip():
             raise ValueError("Memory text cannot be empty")
@@ -221,7 +220,7 @@ class MemoryManager:
             entry["owner"] = owner
         return entry
     
-    def find_duplicates(self, text: str, entries: List[Dict] = None) -> List[Dict]:
+    def find_duplicates(self, text: str, entries: list[dict] = None) -> list[dict]:
         """Find duplicate memory entries based on text content."""
         if entries is None:
             entries = self.load()

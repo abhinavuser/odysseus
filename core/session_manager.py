@@ -57,7 +57,7 @@ class SessionManager:
 
     def __init__(self, sessions_file: str = None):
         # sessions_file kept for backward compat, not used
-        self.sessions: Dict[str, Session] = {}
+        self.sessions: dict[str, Session] = {}
         self.load_sessions()
 
     # ------------------------------------------------------------------
@@ -593,7 +593,7 @@ class SessionManager:
     # Queries
     # ------------------------------------------------------------------
 
-    def get_sessions_for_user(self, username: Optional[str] = None) -> Dict[str, Session]:
+    def get_sessions_for_user(self, username: Optional[str] = None) -> dict[str, Session]:
         """Return sessions for a specific user (or all if username is None)."""
         if username is None:
             return self.sessions

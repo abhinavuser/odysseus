@@ -457,7 +457,7 @@ def _classify_endpoint(base_url: str) -> str:
 
 
 
-def _probe_endpoint(base_url: str, api_key: str = None, timeout: int = 5) -> List[str]:
+def _probe_endpoint(base_url: str, api_key: str = None, timeout: int = 5) -> list[str]:
     """Probe a base URL's /models endpoint and return list of model IDs.
     For Anthropic, queries their /v1/models API, falling back to hardcoded list."""
     from src.endpoint_resolver import resolve_url
@@ -542,7 +542,7 @@ def _probe_endpoint(base_url: str, api_key: str = None, timeout: int = 5) -> Lis
     return []
 
 
-def _ping_endpoint(base_url: str, api_key: str = None, timeout: float = 1.5) -> Dict[str, Any]:
+def _ping_endpoint(base_url: str, api_key: str = None, timeout: float = 1.5) -> dict[str, Any]:
     """Reachability probe that does not require installed/listed models."""
     from src.endpoint_resolver import resolve_url
     base = resolve_url(_normalize_base(base_url))
@@ -609,7 +609,7 @@ def _ping_endpoint(base_url: str, api_key: str = None, timeout: float = 1.5) -> 
 
 
 
-def _model_endpoint_error_message(base_url: str, ping: Dict[str, Any] = None) -> str:
+def _model_endpoint_error_message(base_url: str, ping: dict[str, Any] = None) -> str:
     """Return a provider-aware error message for failed endpoint probes."""
     ping = ping or {}
     error = ping.get("error")
@@ -851,7 +851,7 @@ def setup_model_routes(model_discovery):
     # short enough that a freshly-killed local server shows as offline
     # within ~8s of the user noticing.
     _LOCAL_PROBE_TTL = 8.0
-    _local_probe_cache: Dict[str, Any] = {"data": None, "time": 0.0}
+    _local_probe_cache: dict[str, Any] = {"data": None, "time": 0.0}
 
     @router.get("/model-endpoints/probe-local")
     async def probe_local_endpoints(request: Request):
@@ -877,7 +877,7 @@ def setup_model_routes(model_discovery):
         finally:
             db.close()
 
-        async def _probe_one(ep_id: str, base: str, api_key: Optional[str]) -> Dict[str, Any]:
+        async def _probe_one(ep_id: str, base: str, api_key: Optional[str]) -> dict[str, Any]:
             t0 = _time.time()
             try:
                 models = _probe_endpoint(base, api_key, timeout=2.5)
@@ -896,7 +896,7 @@ def setup_model_routes(model_discovery):
             *[_probe_one(eid, base, key) for eid, base, key in local_eps],
             return_exceptions=False,
         )
-        results: Dict[str, Any] = {}
+        results: dict[str, Any] = {}
         for (eid, _, _), r in zip(local_eps, results_list):
             results[eid] = r
 
@@ -1103,7 +1103,7 @@ def setup_model_routes(model_discovery):
     # ---- Admin: model endpoints CRUD ----
 
     @router.get("/model-endpoints")
-    def list_model_endpoints(request: Request) -> List[Dict[str, Any]]:
+    def list_model_endpoints(request: Request) -> list[dict[str, Any]]:
         require_admin(request)
         db = SessionLocal()
         try:
@@ -1509,7 +1509,7 @@ def setup_model_routes(model_discovery):
     async def toggle_model_endpoint(ep_id: str, request: Request):
         require_admin(request)
         # Optional JSON body for field-targeted updates. No body → toggle is_enabled (legacy behaviour).
-        body: Dict[str, Any] = {}
+        body: dict[str, Any] = {}
         try:
             if int(request.headers.get("content-length") or 0) > 0:
                 body = await request.json()

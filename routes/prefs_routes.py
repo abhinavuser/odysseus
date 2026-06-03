@@ -11,7 +11,7 @@ PREFS_FILE = os.path.join("data", "user_prefs.json")
 def _load():
     """Load the raw prefs file (internal use only)."""
     try:
-        with open(PREFS_FILE, "r", encoding="utf-8") as f:
+        with open(PREFS_FILE, encoding="utf-8") as f:
             data = json.load(f)
             return data if isinstance(data, dict) else {}
     except (FileNotFoundError, json.JSONDecodeError):

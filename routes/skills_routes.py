@@ -26,14 +26,14 @@ class SkillAddRequest(BaseModel):
     name: Optional[str] = Field(None, max_length=80)
     description: Optional[str] = Field(None, max_length=200)
     category: str = Field("general", max_length=40)
-    tags: List[str] = Field(default_factory=list)
-    platforms: List[str] = Field(default_factory=list)
-    requires_toolsets: List[str] = Field(default_factory=list)
-    fallback_for_toolsets: List[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
+    platforms: list[str] = Field(default_factory=list)
+    requires_toolsets: list[str] = Field(default_factory=list)
+    fallback_for_toolsets: list[str] = Field(default_factory=list)
     when_to_use: Optional[str] = Field(None, max_length=2000)
-    procedure: List[str] = Field(default_factory=list)
-    pitfalls: List[str] = Field(default_factory=list)
-    verification: List[str] = Field(default_factory=list)
+    procedure: list[str] = Field(default_factory=list)
+    pitfalls: list[str] = Field(default_factory=list)
+    verification: list[str] = Field(default_factory=list)
     status: str = "draft"
     version: str = "1.0.0"
     confidence: float = 0.8
@@ -48,21 +48,21 @@ class SkillAddRequest(BaseModel):
     title: Optional[str] = Field(None, max_length=200)
     problem: Optional[str] = Field(None, max_length=2000)
     solution: Optional[str] = Field(None, max_length=5000)
-    steps: List[str] = Field(default_factory=list)
+    steps: list[str] = Field(default_factory=list)
 
 
 class SkillUpdateRequest(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     category: Optional[str] = None
-    tags: Optional[List[str]] = None
-    platforms: Optional[List[str]] = None
-    requires_toolsets: Optional[List[str]] = None
-    fallback_for_toolsets: Optional[List[str]] = None
+    tags: Optional[list[str]] = None
+    platforms: Optional[list[str]] = None
+    requires_toolsets: Optional[list[str]] = None
+    fallback_for_toolsets: Optional[list[str]] = None
     when_to_use: Optional[str] = None
-    procedure: Optional[List[str]] = None
-    pitfalls: Optional[List[str]] = None
-    verification: Optional[List[str]] = None
+    procedure: Optional[list[str]] = None
+    pitfalls: Optional[list[str]] = None
+    verification: Optional[list[str]] = None
     status: Optional[str] = None
     version: Optional[str] = None
     confidence: Optional[float] = None
@@ -71,7 +71,7 @@ class SkillUpdateRequest(BaseModel):
     title: Optional[str] = None
     problem: Optional[str] = None
     solution: Optional[str] = None
-    steps: Optional[List[str]] = None
+    steps: Optional[list[str]] = None
 
 
 def _skill_test_task(skill: dict) -> str:

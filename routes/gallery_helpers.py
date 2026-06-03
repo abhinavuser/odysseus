@@ -71,7 +71,7 @@ def _extract_exif(content: bytes) -> dict:
         if gps_info and isinstance(gps_info, dict):
             try:
                 def _to_deg(vals):
-                    d, m, s = [float(v) for v in vals]
+                    d, m, s = (float(v) for v in vals)
                     return d + m / 60 + s / 3600
                 if 2 in gps_info and 4 in gps_info:
                     lat = _to_deg(gps_info[2])
@@ -92,7 +92,7 @@ def _extract_exif(content: bytes) -> dict:
 
 # ---- Helpers ----
 
-def _image_to_dict(img: GalleryImage, session_name: str = None) -> Dict[str, Any]:
+def _image_to_dict(img: GalleryImage, session_name: str = None) -> dict[str, Any]:
     return {
         "id": img.id,
         "filename": img.filename,

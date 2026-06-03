@@ -7,7 +7,7 @@ from datetime import datetime
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=50000, description="Chat message")
     session: str = Field(..., description="Session ID")
-    attachments: Optional[List[str]] = Field(default=[], description="Attachment IDs")
+    attachments: Optional[list[str]] = Field(default=[], description="Attachment IDs")
     use_web: Optional[bool] = Field(default=False, description="Enable web search")
     use_research: Optional[bool] = Field(default=False, description="Enable deep research")
     time_filter: Optional[str] = Field(default=None, description="Time filter for search")
@@ -106,7 +106,7 @@ class DirectoryRequest(BaseModel):
 class ErrorResponse(BaseModel):
     error: str = Field(..., description="Error code")
     message: str = Field(..., description="Error message")
-    details: Optional[Dict[str, Any]] = Field(default=None, description="Additional error details")
+    details: Optional[dict[str, Any]] = Field(default=None, description="Additional error details")
 
 
 class UploadResponse(BaseModel):

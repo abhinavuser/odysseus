@@ -907,7 +907,7 @@ def setup_task_routes(task_scheduler) -> APIRouter:
 
     # --- PARSE NATURAL LANGUAGE → TASK DRAFT (AI) ---
     @router.post("/parse")
-    async def parse_task(request: Request) -> Dict[str, Any]:
+    async def parse_task(request: Request) -> dict[str, Any]:
         """Turn a free-form description ("every weekday at 7am research the top
         AI news and summarize it") into a structured task draft the frontend
         can pre-fill the form with. Returns a draft only — the user reviews and
@@ -970,7 +970,7 @@ def setup_task_routes(task_scheduler) -> APIRouter:
             if not isinstance(draft, dict):
                 raise ValueError("not an object")
             # Whitelist + light validation so the frontend gets clean fields.
-            out: Dict[str, Any] = {}
+            out: dict[str, Any] = {}
             if draft.get("task_type") in ("llm", "research"):
                 out["task_type"] = draft["task_type"]
             else:

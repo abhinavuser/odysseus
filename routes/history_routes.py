@@ -19,7 +19,7 @@ def setup_history_routes(session_manager) -> APIRouter:
     router = APIRouter(tags=["history"])
 
     @router.get("/api/history/{session_id}")
-    async def get_session_history(request: Request, session_id: str) -> Dict[str, Any]:
+    async def get_session_history(request: Request, session_id: str) -> dict[str, Any]:
         _verify_session_owner(request, session_id)
         try:
             session = session_manager.get_session(session_id)
@@ -483,7 +483,7 @@ def setup_history_routes(session_manager) -> APIRouter:
             raise HTTPException(500, str(e))
 
     @router.get("/api/conversations/topics")
-    async def get_conversation_topics(request: Request) -> Dict[str, Any]:
+    async def get_conversation_topics(request: Request) -> dict[str, Any]:
         from src.auth_helpers import require_user
         user = require_user(request)
         try:

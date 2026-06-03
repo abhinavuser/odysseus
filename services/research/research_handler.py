@@ -26,7 +26,7 @@ class ResearchHandler:
 
     def __init__(self):
         self._legacy_engine = None
-        self._active_tasks: Dict[str, dict] = {}
+        self._active_tasks: dict[str, dict] = {}
         self._initialize_legacy_engine()
         RESEARCH_DATA_DIR.mkdir(parents=True, exist_ok=True)
 

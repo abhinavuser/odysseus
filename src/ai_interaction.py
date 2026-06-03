@@ -58,7 +58,7 @@ def set_rag_manager(rag_mgr, personal_docs_mgr=None):
 from src.endpoint_resolver import normalize_base as _normalize_base, build_chat_url, build_headers, build_models_url
 
 
-def _resolve_model(spec: str) -> Tuple[str, str, Dict]:
+def _resolve_model(spec: str) -> tuple[str, str, dict]:
     """Resolve a model specifier to (endpoint_url, model_id, headers).
 
     Accepts:
@@ -141,7 +141,7 @@ def _resolve_model(spec: str) -> Tuple[str, str, Dict]:
 # Tool implementations
 # ---------------------------------------------------------------------------
 
-async def do_chat_with_model(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_chat_with_model(content: str, session_id: Optional[str] = None) -> dict:
     """Send a message to a specific model and return its response.
 
     Content format:
@@ -190,7 +190,7 @@ _TEACHER_SYSTEM_PROMPT = (
 )
 
 
-async def do_ask_teacher(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_ask_teacher(content: str, session_id: Optional[str] = None) -> dict:
     """Ask a more capable model for help.
 
     Content format:
@@ -235,7 +235,7 @@ async def do_ask_teacher(content: str, session_id: Optional[str] = None) -> Dict
         return {"error": f"Teacher call failed ({model_spec}): {e}"}
 
 
-async def do_second_opinion(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_second_opinion(content: str, session_id: Optional[str] = None) -> dict:
     """Get a second opinion from another model, then have the original model
     evaluate the feedback and produce a unified version.
 
@@ -379,7 +379,7 @@ async def do_second_opinion(content: str, session_id: Optional[str] = None) -> D
     }
 
 
-async def do_create_session(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_create_session(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Create a new chat session.
 
     Content format:
@@ -430,7 +430,7 @@ async def do_create_session(content: str, session_id: Optional[str] = None, owne
         return {"error": f"Failed to create session: {e}"}
 
 
-async def do_list_sessions(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_list_sessions(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """List sessions sorted by most-recently-active first.
 
     Output includes a relative "last active" timestamp per row so the
@@ -517,7 +517,7 @@ async def do_list_sessions(content: str, session_id: Optional[str] = None, owner
         return {"error": str(e)}
 
 
-async def do_send_to_session(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_send_to_session(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Send a message to an existing session and get a response.
 
     Content format:
@@ -584,7 +584,7 @@ async def stream_ai_tool(tool: str, content: str, session_id: Optional[str] = No
     yield {"_final": True, "desc": desc, "result": result}
 
 
-async def do_pipeline(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_pipeline(content: str, session_id: Optional[str] = None) -> dict:
     """Execute a multi-step pipeline where each model's output feeds the next.
 
     Content format (JSON):
@@ -697,7 +697,7 @@ async def do_pipeline(content: str, session_id: Optional[str] = None) -> Dict:
 # Session management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_session(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_manage_session(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Manage sessions: rename, archive, delete, important, truncate, fork.
 
     Content format:
@@ -924,7 +924,7 @@ async def do_manage_session(content: str, session_id: Optional[str] = None, owne
 # Memory management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_memory(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_manage_memory(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Manage memories: list, add, edit, delete, search.
 
     Content format:
@@ -1091,7 +1091,7 @@ async def do_manage_memory(content: str, session_id: Optional[str] = None, owner
 # List models tool
 # ---------------------------------------------------------------------------
 
-async def do_list_models(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_list_models(content: str, session_id: Optional[str] = None) -> dict:
     """List all available models across configured endpoints.
 
     Content = optional filter keyword.
@@ -1159,7 +1159,7 @@ async def do_list_models(content: str, session_id: Optional[str] = None) -> Dict
 # RAG management tool
 # ---------------------------------------------------------------------------
 
-async def do_manage_rag(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_manage_rag(content: str, session_id: Optional[str] = None) -> dict:
     """Manage RAG indexed documents: list, add_directory, remove_directory.
 
     Content format:
@@ -1250,7 +1250,7 @@ async def do_manage_rag(content: str, session_id: Optional[str] = None) -> Dict:
 # UI control tool (returns events for frontend to apply)
 # ---------------------------------------------------------------------------
 
-async def do_ui_control(content: str, session_id: Optional[str] = None) -> Dict:
+async def do_ui_control(content: str, session_id: Optional[str] = None) -> dict:
     """Control frontend UI: toggle settings, switch model, change theme.
 
     Content format:
@@ -1541,7 +1541,7 @@ async def do_ui_control(content: str, session_id: Optional[str] = None) -> Dict:
 # Image generation
 # ---------------------------------------------------------------------------
 
-async def do_generate_image(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> Dict:
+async def do_generate_image(content: str, session_id: Optional[str] = None, owner: Optional[str] = None) -> dict:
     """Generate an image using an image-capable model (e.g. gpt-image-1).
 
     Content format:
@@ -1754,7 +1754,7 @@ async def do_generate_image(content: str, session_id: Optional[str] = None, owne
 
 async def dispatch_ai_tool(
     tool: str, content: str, session_id: Optional[str] = None, owner: Optional[str] = None
-) -> Tuple[str, Dict]:
+) -> tuple[str, dict]:
     """Dispatch an AI interaction tool. Returns (description, result_dict)."""
 
     if tool == "chat_with_model":

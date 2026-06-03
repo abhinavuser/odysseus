@@ -447,7 +447,7 @@ def _event_to_dict(ev: CalendarEvent) -> dict:
 
 def _expand_rrule(
     ev: CalendarEvent, start: datetime, end: datetime
-) -> List[dict]:
+) -> list[dict]:
     """Expand a single recurring CalendarEvent into occurrence dicts.
 
     Each occurrence gets a stable compound UID of the form

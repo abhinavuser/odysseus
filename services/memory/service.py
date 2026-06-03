@@ -16,13 +16,13 @@ class Memory:
     text: str
     timestamp: int
     session_id: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
 class MemorySearchResult:
     """Result of memory search."""
-    memories: List[Memory]
+    memories: list[Memory]
     query: str
     total: int
 
@@ -120,7 +120,7 @@ class MemoryService:
         ]
         return MemorySearchResult(memories=memories, query=query, total=len(memories))
 
-    def get_all(self, limit: int = 100) -> List[Memory]:
+    def get_all(self, limit: int = 100) -> list[Memory]:
         """Get all memories."""
         memories = self.manager.get_memories(limit=limit)
         return [

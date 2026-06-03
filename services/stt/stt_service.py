@@ -173,7 +173,7 @@ class STTService:
             logger.error(f"Unknown STT provider: {provider}")
             return None
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         settings = self._load_settings()
         provider = settings["stt_provider"]
         stt_enabled = settings.get("stt_enabled", False)

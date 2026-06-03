@@ -66,7 +66,7 @@ def setup_memory_routes(memory_manager: MemoryManager, session_manager: SessionM
                                  for m in relevant]
         }
 
-    @router.post("/add", response_model=Dict[str, Any])
+    @router.post("/add", response_model=dict[str, Any])
     async def api_add_memory(
         request: Request,
         memory_data: Optional[MemoryAddRequest] = None
@@ -189,7 +189,7 @@ def setup_memory_routes(memory_manager: MemoryManager, session_manager: SessionM
         }
 
     @router.post("/extract")
-    async def extract_memory(request: Request, session: str = Form(...)) -> Dict[str, List[str]]:
+    async def extract_memory(request: Request, session: str = Form(...)) -> dict[str, list[str]]:
         """Analyze a session's chat history and return memory suggestions."""
         require_user(request)
         try:

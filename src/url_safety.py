@@ -26,7 +26,7 @@ from urllib.parse import urlparse
 ALLOWED_SCHEMES = ("http", "https")
 
 
-def _default_resolver(host: str) -> List[str]:
+def _default_resolver(host: str) -> list[str]:
     """Resolve a hostname to the list of IP strings it maps to (A + AAAA)."""
     return [info[4][0] for info in socket.getaddrinfo(host, None)]
 
@@ -49,8 +49,8 @@ def check_outbound_url(
     url: str,
     *,
     block_private: bool = False,
-    resolver: Optional[Callable[[str], List[str]]] = None,
-) -> Tuple[bool, str]:
+    resolver: Optional[Callable[[str], list[str]]] = None,
+) -> tuple[bool, str]:
     """Validate a user-supplied outbound URL.
 
     Returns ``(ok, reason)``. ``ok`` is True only when the URL is safe to fetch.

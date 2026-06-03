@@ -68,14 +68,14 @@ Use precise language. Show causal relationships explicitly. Quantify uncertainty
         self.presets_file = os.path.join(data_dir, "presets.json")
         self.presets = self.load()
     
-    def load(self) -> Dict[str, Any]:
+    def load(self) -> dict[str, Any]:
         """Load presets from file, creating defaults if needed"""
         if not os.path.exists(self.presets_file):
             self.save(self.DEFAULT_PRESETS)
             return self.DEFAULT_PRESETS.copy()
         
         try:
-            with open(self.presets_file, 'r', encoding="utf-8") as f:
+            with open(self.presets_file, encoding="utf-8") as f:
                 presets = json.load(f)
             if not isinstance(presets, dict):
                 logger.error("Error loading presets: expected an object")
@@ -112,7 +112,7 @@ Use precise language. Show causal relationships explicitly. Quantify uncertainty
             logger.error(f"Error loading presets: {e}")
             return self.DEFAULT_PRESETS.copy()
     
-    def save(self, presets: Dict[str, Any]) -> bool:
+    def save(self, presets: dict[str, Any]) -> bool:
         """Save presets to file"""
         try:
             os.makedirs(os.path.dirname(self.presets_file), exist_ok=True)
@@ -124,7 +124,7 @@ Use precise language. Show causal relationships explicitly. Quantify uncertainty
             logger.error(f"Error saving presets: {e}")
             return False
     
-    def get(self, preset_id: str) -> Dict[str, Any]:
+    def get(self, preset_id: str) -> dict[str, Any]:
         """Get a specific preset"""
         return self.presets.get(preset_id)
     
@@ -151,7 +151,7 @@ Use precise language. Show causal relationships explicitly. Quantify uncertainty
         }
         return self.save(self.presets)
     
-    def get_all(self) -> Dict[str, Any]:
+    def get_all(self) -> dict[str, Any]:
         """Get all presets"""
         return self.presets.copy()
 

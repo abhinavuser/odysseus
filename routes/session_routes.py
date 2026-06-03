@@ -200,18 +200,18 @@ def setup_session_routes(session_manager: SessionManager, config: dict, webhook_
                 msg_count_map[row.id] = row.message_count or 0
             # Sessions with active documents that have content
             from sqlalchemy import func
-            doc_session_ids = set(
+            doc_session_ids = {
                 r[0] for r in db.query(Document.session_id)
                 .filter(Document.is_active == True,
                         Document.current_content != None,
                         func.trim(Document.current_content) != "")
                 .distinct().all()
-            )
-            img_session_ids = set(
+            }
+            img_session_ids = {
                 r[0] for r in db.query(GalleryImage.session_id)
                 .filter(GalleryImage.session_id != None)
                 .distinct().all()
-            )
+            }
         finally:
             db.close()
 

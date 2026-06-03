@@ -17,7 +17,9 @@ close / navigation / refresh). It does NOT survive a server restart.
 import asyncio
 import json
 import logging
-from typing import AsyncGenerator, Dict, Optional
+from typing import Dict, Optional
+
+from collections.abc import AsyncGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,7 @@ class _Run:
         self.evict_task: Optional[asyncio.Task] = None
 
 
-_RUNS: Dict[str, _Run] = {}
+_RUNS: dict[str, _Run] = {}
 
 # How long a FINISHED run (and its full replay buffer) is retained after the
 # last subscriber disconnects, so a reconnect within the window can still

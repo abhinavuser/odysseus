@@ -1011,7 +1011,7 @@ def _migrate_assign_legacy_owner():
         auth_path = os.path.join("data", "auth.json")
     admin_user = None
     try:
-        with open(auth_path, "r", encoding="utf-8") as f:
+        with open(auth_path, encoding="utf-8") as f:
             auth_data = _json.load(f)
         users = auth_data.get("users", {})
         if users:
@@ -1064,7 +1064,7 @@ def _migrate_assign_legacy_owner():
     mem_path = os.path.join("data", "memory.json")
     try:
         if os.path.exists(mem_path):
-            with open(mem_path, "r", encoding="utf-8") as f:
+            with open(mem_path, encoding="utf-8") as f:
                 memories = _json.load(f)
             changed = False
             for m in memories:
@@ -1082,7 +1082,7 @@ def _migrate_assign_legacy_owner():
     prefs_path = os.path.join("data", "user_prefs.json")
     try:
         if os.path.exists(prefs_path):
-            with open(prefs_path, "r", encoding="utf-8") as f:
+            with open(prefs_path, encoding="utf-8") as f:
                 prefs = _json.load(f)
             if "_users" not in prefs and prefs:
                 # Flat format → nest under admin user
@@ -1715,7 +1715,7 @@ def get_db():
         db.close()
 
 from contextlib import contextmanager
-from typing import Generator
+from collections.abc import Generator
 
 @contextmanager
 def get_db_session() -> Generator:

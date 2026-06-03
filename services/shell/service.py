@@ -2,7 +2,9 @@
 """Shell service — safe command execution."""
 
 from dataclasses import dataclass
-from typing import Optional, AsyncIterator
+from typing import Optional
+
+from collections.abc import AsyncIterator
 import asyncio
 from pathlib import Path
 

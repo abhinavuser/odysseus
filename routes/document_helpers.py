@@ -37,7 +37,7 @@ class DocumentPatch(BaseModel):
 
 # ---- Helpers ----
 
-def _doc_to_dict(doc: Document) -> Dict[str, Any]:
+def _doc_to_dict(doc: Document) -> dict[str, Any]:
     return {
         "id": doc.id,
         "session_id": doc.session_id,
@@ -57,7 +57,7 @@ def _doc_to_dict(doc: Document) -> Dict[str, Any]:
         "source_email_message_id": getattr(doc, "source_email_message_id", None),
     }
 
-def _version_to_dict(v: DocumentVersion) -> Dict[str, Any]:
+def _version_to_dict(v: DocumentVersion) -> dict[str, Any]:
     return {
         "id": v.id,
         "document_id": v.document_id,

@@ -39,7 +39,7 @@ def _domain(url: str) -> str:
         return ""
 
 
-def rank_search_results(query: str, results: List[dict]) -> List[dict]:
+def rank_search_results(query: str, results: list[dict]) -> list[dict]:
     """Rank search results by title relevance, snippet quality, domain authority, and recency."""
     query_terms = [t.lower() for t in re.findall(r"\b\w+\b", query)]
     query_lc = query.lower()

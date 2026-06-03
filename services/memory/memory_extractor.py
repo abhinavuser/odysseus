@@ -51,7 +51,7 @@ def _memory_dicts(entries):
 def _load_tidy_state(memory_manager) -> dict:
     path = _tidy_state_path(memory_manager)
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
         return data if isinstance(data, dict) else {}
     except (FileNotFoundError, json.JSONDecodeError):

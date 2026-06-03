@@ -62,7 +62,7 @@ class EmbeddingClient:
         return self._dim
 
     def encode(
-        self, texts: List[str], normalize_embeddings: bool = True
+        self, texts: list[str], normalize_embeddings: bool = True
     ) -> np.ndarray:
         """Encode texts via the API. Returns (N, dim) float32 array."""
         if not texts:
@@ -164,7 +164,7 @@ class FastEmbedClient:
         return self._dim
 
     def encode(
-        self, texts: List[str], normalize_embeddings: bool = True
+        self, texts: list[str], normalize_embeddings: bool = True
     ) -> np.ndarray:
         """Encode texts locally. Returns (N, dim) float32 array."""
         if not texts:

@@ -29,7 +29,7 @@ def create_directories():
     for directory in (DATA_DIR, PERSONAL_DIR, RUNBOOK_DIR, UPLOAD_DIR):
         os.makedirs(directory, exist_ok=True)
         
-def initialize_managers(base_dir: str, rag_manager=None) -> Dict[str, Any]:
+def initialize_managers(base_dir: str, rag_manager=None) -> dict[str, Any]:
     """
     Initialize all manager and handler instances.
 

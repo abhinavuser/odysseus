@@ -170,7 +170,7 @@ class ChatProcessor:
         agent_mode: bool = False,
         incognito: bool = False,
         use_skills: bool = True,
-    ) -> Tuple[List[Dict[str, str]], List[Dict[str, Any]], List[Dict[str, str]]]:
+    ) -> tuple[list[dict[str, str]], list[dict[str, Any]], list[dict[str, str]]]:
         """Build the context preface for LLM calls.
 
         Returns:
@@ -306,7 +306,7 @@ class ChatProcessor:
                 logger.debug(f"Skills index unavailable: {e}")
                 idx = []
             if idx:
-                by_cat: Dict[str, list] = {}
+                by_cat: dict[str, list] = {}
                 for s in idx:
                     by_cat.setdefault(s.get("category") or "general", []).append(s)
                 lines = ["[Available skills — call manage_skills(action='view', name='...') to load one when relevant]"]

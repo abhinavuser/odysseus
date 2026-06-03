@@ -16,7 +16,7 @@ from typing import List, Optional
 logger = logging.getLogger(__name__)
 
 
-def extract_urls(text: str) -> List[str]:
+def extract_urls(text: str) -> list[str]:
     """Extract URLs from text using regex pattern."""
     url_pattern = r'https?://[^\s<>"{}|\\^`\[\]]+'
     urls = re.findall(url_pattern, text)
@@ -209,7 +209,7 @@ def validate_file_upload(file: UploadFile) -> UploadFile:
                     "message": "File size exceeds 10MB limit"
                 }
             )
-    except IOError as e:
+    except OSError as e:
         logger.error(f"Error reading file size for {file.filename}: {e}")
         raise HTTPException(
             status_code=500,

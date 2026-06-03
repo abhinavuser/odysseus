@@ -57,7 +57,7 @@ def _resolve_event_owner(owner: Optional[str]) -> Optional[str]:
         from src.constants import DATA_DIR
 
         auth_path = os.path.join(DATA_DIR, "auth.json")
-        with open(auth_path, "r", encoding="utf-8") as f:
+        with open(auth_path, encoding="utf-8") as f:
             users = (json.load(f).get("users") or {})
         for username, data in users.items():
             if data.get("is_admin") is True:

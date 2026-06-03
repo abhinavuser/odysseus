@@ -18,7 +18,7 @@ def setup_upload_routes(upload_handler):
     """Setup upload routes with the provided handler"""
     
     @router.post("")
-    async def api_upload(request: Request, files: List[UploadFile] = File(...)):
+    async def api_upload(request: Request, files: list[UploadFile] = File(...)):
         """Upload files with enhanced security and organization."""
         if not files:
             raise HTTPException(400, "No files uploaded")

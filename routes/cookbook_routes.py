@@ -1950,7 +1950,7 @@ def setup_cookbook_routes() -> APIRouter:
                     ssh_base = ["ssh"]
                     if ssh_port and ssh_port != "22":
                         ssh_base.extend(["-p", str(ssh_port)])
-                    shell_cmd = " ".join(shlex.quote(x) for x in cmd)
+                    shell_cmd = shlex.join(cmd)
                     proc = subprocess.run(ssh_base + [remote_host, shell_cmd], timeout=12, capture_output=True)
                 else:
                     proc = subprocess.run(cmd, timeout=12, capture_output=True)

@@ -30,7 +30,7 @@ class DataConfig(BaseSettings):
     
     # Upload settings
     max_upload_size: int = Field(default=10 * 1024 * 1024, description="Maximum upload size in bytes (10MB)")
-    allowed_extensions: List[str] = Field(
+    allowed_extensions: list[str] = Field(
         default=[
             '.txt', '.py', '.html', '.md', '.json', '.csv',
             '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.tiff', '.pdf'
@@ -96,9 +96,9 @@ class SecurityConfig(BaseSettings):
     upload_rate_max_entries: int = Field(default=1000, description="Maximum number of rate limit entries to keep")
     
     # Security settings
-    allowed_origins: List[str] = Field(default=["*"], description="Allowed origins for CORS")
+    allowed_origins: list[str] = Field(default=["*"], description="Allowed origins for CORS")
     max_file_size: int = Field(default=10 * 1024 * 1024, description="Maximum file size in bytes")
-    dangerous_file_types: List[str] = Field(
+    dangerous_file_types: list[str] = Field(
         default=[
             'application/x-executable', 'application/x-sharedlib',
             'application/x-dll', 'application/x-msdownload',
@@ -107,7 +107,7 @@ class SecurityConfig(BaseSettings):
         ],
         description="Potentially dangerous MIME types to block"
     )
-    dangerous_extensions: List[str] = Field(
+    dangerous_extensions: list[str] = Field(
         default=[
             '.exe', '.dll', '.bat', '.cmd', '.sh', '.bash', 
             '.js', '.vbs', '.ps1', '.py', '.php', '.jsp', '.asp', '.aspx'

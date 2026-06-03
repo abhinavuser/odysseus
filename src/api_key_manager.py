@@ -44,12 +44,12 @@ class APIKeyManager:
         with open(self.api_keys_file, 'w', encoding="utf-8") as f:
             json.dump(keys, f)
     
-    def load(self) -> Dict[str, str]:
+    def load(self) -> dict[str, str]:
         """Load and decrypt API keys"""
         if not os.path.exists(self.api_keys_file):
             return {}
         try:
-            with open(self.api_keys_file, 'r', encoding="utf-8") as f:
+            with open(self.api_keys_file, encoding="utf-8") as f:
                 encrypted_keys = json.load(f)
         except (json.JSONDecodeError, OSError) as e:
             # A corrupt/truncated api_keys.json must not crash load() (called on

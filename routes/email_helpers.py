@@ -1377,7 +1377,7 @@ class SendEmailRequest(BaseModel):
     in_reply_to: Optional[str] = None
     references: Optional[str] = None
     # List of uploaded attachment tokens (filenames in COMPOSE_UPLOADS_DIR)
-    attachments: Optional[List[str]] = None
+    attachments: Optional[list[str]] = None
     # Which account to send from. None = default account.
     account_id: Optional[str] = None
     # Internal marker for Odysseus-generated mail (e.g. reminder, scheduled).

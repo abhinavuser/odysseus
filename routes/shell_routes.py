@@ -110,7 +110,7 @@ def _running_in_container(dockerenv_path="/.dockerenv", cgroup_path="/proc/1/cgr
     if os.path.exists(dockerenv_path):
         return True
     try:
-        with open(cgroup_path, "r", encoding="utf-8") as fh:
+        with open(cgroup_path, encoding="utf-8") as fh:
             contents = fh.read()
     except OSError:
         return False
@@ -376,7 +376,7 @@ async def _create_shell(command: str, **kwargs):
     return await asyncio.create_subprocess_shell(command, **kwargs)
 
 
-async def _exec_shell(command: str, timeout: int = EXEC_TIMEOUT) -> Dict[str, Any]:
+async def _exec_shell(command: str, timeout: int = EXEC_TIMEOUT) -> dict[str, Any]:
     """Run a shell command and return stdout/stderr/exit_code."""
     proc = None
     try:
@@ -727,7 +727,7 @@ async def _generate_win_detached(cmd: str, request: Request):
                     for line in lines[lines_sent:]:
                         yield f"data: {json.dumps({'stream': 'stdout', 'data': line})}\n\n"
                     lines_sent = len(lines)
-                exit_code = int((exit_path.read_text(encoding="utf-8", errors="replace").strip() or "0"))
+                exit_code = int(exit_path.read_text(encoding="utf-8", errors="replace").strip() or "0")
             except Exception:
                 exit_code = 0
             break
@@ -745,7 +745,7 @@ def setup_shell_routes() -> APIRouter:
     router = APIRouter(tags=["shell"])
 
     @router.post("/api/shell/exec")
-    async def shell_exec(request: Request, req: ShellExecRequest) -> Dict[str, Any]:
+    async def shell_exec(request: Request, req: ShellExecRequest) -> dict[str, Any]:
         """Execute a shell command and return output. Admin only."""
         _require_admin(request)
         cmd = req.command.strip()

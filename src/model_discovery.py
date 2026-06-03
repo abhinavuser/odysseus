@@ -11,12 +11,12 @@ from urllib.parse import urlparse
 logger = logging.getLogger(__name__)
 
 # Cache for discovered hosts
-_hosts_cache: List[str] = []
+_hosts_cache: list[str] = []
 _hosts_cache_time: float = 0
 _HOSTS_CACHE_TTL = 60  # seconds
 
 
-def _parse_tailscale_status(raw: str) -> Dict[str, Any]:
+def _parse_tailscale_status(raw: str) -> dict[str, Any]:
     try:
         data = json.loads(raw)
     except (TypeError, json.JSONDecodeError):
@@ -33,7 +33,7 @@ def _first_tailscale_ipv4(value: Any) -> Optional[str]:
     return None
 
 
-def discover_tailscale_hosts() -> List[str]:
+def discover_tailscale_hosts() -> list[str]:
     """Discover online Tailscale peers, returning their IPv4 addresses."""
     global _hosts_cache, _hosts_cache_time
 
@@ -96,17 +96,17 @@ class ModelDiscovery:
         # Custom ports from env vars, merged into the scan list by discover_models.
         self._extra_ports: set = set()
 
-    def _get_hosts(self) -> List[str]:
+    def _get_hosts(self) -> list[str]:
         """Get all hosts to scan, using env override, Tailscale, or default."""
         self._extra_ports = set()
 
-        def _append_host(out: List[str], host: str) -> None:
+        def _append_host(out: list[str], host: str) -> None:
             host = (host or "").strip()
             if not host or host in out:
                 return
             out.append(host)
 
-        def _append_env_hosts(out: List[str]) -> None:
+        def _append_env_hosts(out: list[str]) -> None:
             """Add hosts (and any custom ports) from provider-specific env vars."""
             for env_name in ("OLLAMA_BASE_URL", "OLLAMA_URL", "LM_STUDIO_URL"):
                 raw = os.getenv(env_name, "").strip()
@@ -162,7 +162,7 @@ class ModelDiscovery:
             pass
         return None
 
-    def _check_port(self, host: str, port: int) -> Optional[Dict[str, Any]]:
+    def _check_port(self, host: str, port: int) -> Optional[dict[str, Any]]:
         """Check a single host:port for models."""
         base = f"http://{host}:{port}/v1"
         try:
@@ -184,7 +184,7 @@ class ModelDiscovery:
             pass
         return None
 
-    def discover_models(self) -> Dict[str, List[Dict[str, Any]]]:
+    def discover_models(self) -> dict[str, list[dict[str, Any]]]:
         """Discover available models from all reachable hosts."""
         hosts = self._get_hosts()
         items = []
@@ -215,7 +215,7 @@ class ModelDiscovery:
         logger.info(f"Discovered {len(items)} model endpoints across {len(hosts)} hosts")
         return {"hosts": hosts, "items": items}
 
-    def get_providers(self) -> Dict[str, Any]:
+    def get_providers(self) -> dict[str, Any]:
         """Get all available providers"""
         discovery = self.discover_models()
         items = discovery["items"]

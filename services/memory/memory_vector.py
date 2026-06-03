@@ -52,7 +52,7 @@ class MemoryVectorStore:
     def healthy(self) -> bool:
         return self._healthy
 
-    def _embed(self, texts: List[str]) -> List[List[float]]:
+    def _embed(self, texts: list[str]) -> list[list[float]]:
         vecs = self._model.encode(texts, normalize_embeddings=True)
         return vecs.tolist()
 
@@ -87,7 +87,7 @@ class MemoryVectorStore:
         except Exception as e:
             logger.warning(f"memory remove {memory_id}: {e}")
 
-    def search(self, query: str, k: int = 8) -> List[Dict]:
+    def search(self, query: str, k: int = 8) -> list[dict]:
         """Search for the most relevant memory IDs by semantic similarity.
         Returns list of {"memory_id": str, "score": float}.
 
@@ -131,7 +131,7 @@ class MemoryVectorStore:
                 return results["ids"][0][0]
         return None
 
-    def rebuild(self, memories: List[Dict]):
+    def rebuild(self, memories: list[dict]):
         """Rebuild the entire index from a list of memory entries.
         Each entry must have 'id' and 'text' keys."""
         if not self._healthy:

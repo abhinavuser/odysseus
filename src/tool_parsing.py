@@ -329,7 +329,7 @@ def _parse_tool_code_block(raw: str) -> Optional[ToolBlock]:
     return None
 
 
-def parse_tool_blocks(text: str) -> List[ToolBlock]:
+def parse_tool_blocks(text: str) -> list[ToolBlock]:
     """Extract executable tool blocks from LLM response text.
 
     Supports multiple formats:

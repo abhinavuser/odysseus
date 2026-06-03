@@ -35,7 +35,7 @@ class SignatureCreate(BaseModel):
     svg: Optional[str] = None
 
 
-def _to_dict(s: Signature) -> Dict[str, Any]:
+def _to_dict(s: Signature) -> dict[str, Any]:
     return {
         "id": s.id,
         "name": s.name,
@@ -50,7 +50,7 @@ def setup_signature_routes() -> APIRouter:
     router = APIRouter(tags=["signatures"])
 
     @router.get("/api/signatures")
-    async def list_signatures(request: Request) -> Dict[str, Any]:
+    async def list_signatures(request: Request) -> dict[str, Any]:
         user = get_current_user(request)
         db = SessionLocal()
         try:
@@ -65,7 +65,7 @@ def setup_signature_routes() -> APIRouter:
             db.close()
 
     @router.post("/api/signatures")
-    async def create_signature(request: Request, req: SignatureCreate) -> Dict[str, Any]:
+    async def create_signature(request: Request, req: SignatureCreate) -> dict[str, Any]:
         user = get_current_user(request)
         raw = (req.data or "").strip()
         m = _DATA_URL_RE.match(raw)
@@ -100,7 +100,7 @@ def setup_signature_routes() -> APIRouter:
             db.close()
 
     @router.delete("/api/signatures/{sig_id}")
-    async def delete_signature(sig_id: str, request: Request) -> Dict[str, Any]:
+    async def delete_signature(sig_id: str, request: Request) -> dict[str, Any]:
         user = get_current_user(request)
         db = SessionLocal()
         try:

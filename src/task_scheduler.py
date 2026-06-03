@@ -7,7 +7,9 @@ import re
 import time
 import uuid
 from datetime import datetime, timedelta, timezone
-from typing import Any, Awaitable, Callable, Dict, Tuple
+from typing import Any, Callable, Dict, Tuple
+
+from collections.abc import Awaitable
 
 logger = logging.getLogger(__name__)
 
@@ -22,12 +24,12 @@ def _utcnow() -> datetime:
 # external data (Miniflux unreads, MCP tool snapshots, etc.). This cache
 # deduplicates those fetches — in-flight requests for the same key await the
 # same underlying coroutine, and completed results are reused until TTL expiry.
-_shared_cache: Dict[Tuple, Tuple[float, Any]] = {}
-_shared_cache_pending: Dict[Tuple, asyncio.Future] = {}
+_shared_cache: dict[tuple, tuple[float, Any]] = {}
+_shared_cache_pending: dict[tuple, asyncio.Future] = {}
 _shared_cache_lock = asyncio.Lock()
 
 
-async def _cached(key: Tuple, ttl: float, fetch: Callable[[], Awaitable[Any]]) -> Any:
+async def _cached(key: tuple, ttl: float, fetch: Callable[[], Awaitable[Any]]) -> Any:
     """Return a cached result for `key` if fresh, else call `fetch()` and store.
 
     Concurrent callers for the same missing key share one `fetch()` call.
@@ -464,7 +466,7 @@ class TaskScheduler:
                     ScheduledTask.trigger_type == "schedule",
                     ScheduledTask.next_run.isnot(None),
                 ).all()
-                buckets: Dict[str, list] = {}
+                buckets: dict[str, list] = {}
                 for r in rows:
                     if not r.next_run:
                         continue

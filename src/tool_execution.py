@@ -14,7 +14,9 @@ import logging
 import os
 import sys
 import time
-from typing import Any, Awaitable, Callable, Dict, Optional, Tuple
+from typing import Any, Callable, Dict, Optional, Tuple
+
+from collections.abc import Awaitable
 
 from src.tool_security import is_public_blocked_tool, owner_is_admin_or_single_user
 
@@ -198,8 +200,8 @@ async def _run_subprocess_streaming(
     proc: asyncio.subprocess.Process,
     *,
     timeout: float,
-    progress_cb: Optional[Callable[[Dict], Awaitable[None]]] = None,
-) -> Tuple[str, str, Optional[int], bool]:
+    progress_cb: Optional[Callable[[dict], Awaitable[None]]] = None,
+) -> tuple[str, str, Optional[int], bool]:
     """Run a subprocess to completion, streaming progress.
 
     Reads stdout + stderr line-by-line into ring buffers so a
@@ -339,7 +341,7 @@ _MCP_TOOL_MAP = {
 }
 
 
-def _parse_generate_image(content: str) -> Dict:
+def _parse_generate_image(content: str) -> dict:
     lines = content.strip().split("\n")
     args = {"prompt": lines[0].strip() if lines else ""}
     for i, key in enumerate(["model", "size", "quality"], 1):
@@ -348,7 +350,7 @@ def _parse_generate_image(content: str) -> Dict:
     return args
 
 
-def _parse_manage_memory(content: str) -> Dict:
+def _parse_manage_memory(content: str) -> dict:
     lines = content.strip().split("\n")
     action = lines[0].strip().lower() if lines else ""
     args = {"action": action}
@@ -369,12 +371,12 @@ def _parse_manage_memory(content: str) -> Dict:
     return args
 
 
-def _parse_write_file(content: str) -> Dict:
+def _parse_write_file(content: str) -> dict:
     lines = content.split("\n", 1)
     return {"path": lines[0].strip(), "content": lines[1] if len(lines) > 1 else ""}
 
 
-_MCP_ARG_PARSERS: Dict[str, callable] = {
+_MCP_ARG_PARSERS: dict[str, callable] = {
     "bash":           lambda c: {"command": c},
     "python":         lambda c: {"code": c},
     "web_search":     lambda c: {"query": c.split("\n")[0].strip()},
@@ -386,7 +388,7 @@ _MCP_ARG_PARSERS: Dict[str, callable] = {
 }
 
 
-def _build_mcp_args(tool: str, content: str) -> Dict:
+def _build_mcp_args(tool: str, content: str) -> dict:
     """Convert fenced-block text content to structured MCP arguments."""
     parser = _MCP_ARG_PARSERS.get(tool)
     return parser(content) if parser else {}
@@ -395,8 +397,8 @@ def _build_mcp_args(tool: str, content: str) -> Dict:
 async def _call_mcp_tool(
     tool: str,
     content: str,
-    progress_cb: Optional[Callable[[Dict], Awaitable[None]]] = None,
-) -> Dict:
+    progress_cb: Optional[Callable[[dict], Awaitable[None]]] = None,
+) -> dict:
     """Route a legacy tool call through the MCP manager, with direct fallbacks."""
     mcp = get_mcp_manager()
     if not mcp:
@@ -435,8 +437,8 @@ def _split_bg_marker(content: str):
 async def _direct_fallback(
     tool: str,
     content: str,
-    progress_cb: Optional[Callable[[Dict], Awaitable[None]]] = None,
-) -> Optional[Dict]:
+    progress_cb: Optional[Callable[[dict], Awaitable[None]]] = None,
+) -> Optional[dict]:
     """In-process execution path for the eight tools that used to live as
     stdio MCP servers under mcp_servers/. Those servers were deleted in
     favor of native execution; this function is now the canonical path,
@@ -520,7 +522,7 @@ async def _direct_fallback(
             try:
                 # Run blocking read in a thread to keep the loop responsive
                 def _read():
-                    with open(path, "r", encoding="utf-8", errors="replace") as f:
+                    with open(path, encoding="utf-8", errors="replace") as f:
                         return f.read(MAX_READ_CHARS + 1)
                 data = await asyncio.to_thread(_read)
             except FileNotFoundError:
@@ -684,8 +686,8 @@ async def execute_tool_block(
     session_id: Optional[str] = None,
     disabled_tools: Optional[set] = None,
     owner: Optional[str] = None,
-    progress_cb: Optional[Callable[[Dict], Awaitable[None]]] = None,
-) -> Tuple[str, Dict]:
+    progress_cb: Optional[Callable[[dict], Awaitable[None]]] = None,
+) -> tuple[str, dict]:
     """Execute a single tool block. Returns (description, result_dict).
 
     `progress_cb` is forwarded to long-running subprocess tools
@@ -949,7 +951,7 @@ _FORMATTER_HANDLED_KEYS = {
 }
 
 
-def format_tool_result(description: str, result: Dict) -> str:
+def format_tool_result(description: str, result: dict) -> str:
     """Format a tool result into text for feeding back to the LLM."""
     parts = [f"### {description}"]
 

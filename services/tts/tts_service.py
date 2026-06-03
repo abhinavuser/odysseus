@@ -195,7 +195,7 @@ class TTSService:
     def set_voice(self, voice: str):
         """Legacy no-op — voice is now managed via admin settings."""
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         settings = self._load_settings()
         provider = settings["tts_provider"]
         tts_enabled = settings.get("tts_enabled", True)

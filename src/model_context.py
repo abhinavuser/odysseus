@@ -160,7 +160,7 @@ KNOWN_CONTEXT_WINDOWS = {
 # ---------------------------------------------------------------------------
 # Cache
 # ---------------------------------------------------------------------------
-_context_cache: Dict[str, int] = {}
+_context_cache: dict[str, int] = {}
 
 
 def get_context_length(endpoint_url: str, model: str) -> int:
@@ -278,7 +278,7 @@ def _query_context_length(endpoint_url: str, model: str) -> int:
     return DEFAULT_CONTEXT
 
 
-def estimate_tokens(messages: List[Dict]) -> int:
+def estimate_tokens(messages: list[dict]) -> int:
     """Rough token estimate for a list of messages.
 
     Uses chars * 0.3 which is closer to real BPE tokenizer output

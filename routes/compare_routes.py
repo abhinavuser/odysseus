@@ -20,7 +20,7 @@ router = APIRouter(prefix="/api/compare", tags=["compare"])
 
 class RecordVoteRequest(BaseModel):
     prompt: str
-    models: List[str]
+    models: list[str]
     winner: str           # model name or "tie"
     is_blind: bool = True
 

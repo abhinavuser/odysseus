@@ -78,7 +78,7 @@ async def archive_inactive_sessions(session_manager, owner: Optional[str] = None
 
     return archived_count
 
-async def cleanup_old_sessions(session_manager, owner: Optional[str] = None) -> Tuple[int, float]:
+async def cleanup_old_sessions(session_manager, owner: Optional[str] = None) -> tuple[int, float]:
     """
     Delete old sessions based on specific criteria.
 
@@ -158,7 +158,7 @@ async def cleanup_old_sessions(session_manager, owner: Optional[str] = None) -> 
 
     return deleted_count, 0.0
 
-async def get_cleanup_preview(owner: Optional[str] = None) -> Dict[str, Any]:
+async def get_cleanup_preview(owner: Optional[str] = None) -> dict[str, Any]:
     """
     Get a preview of what would be cleaned up without making changes.
 
@@ -265,7 +265,7 @@ async def get_cleanup_preview(owner: Optional[str] = None) -> Dict[str, Any]:
         "estimated_space_freed_mb": round(estimated_space_freed / (1024 * 1024), 2)
     }
 
-async def cleanup_sessions(session_manager, owner: Optional[str] = None) -> Tuple[int, int, float]:
+async def cleanup_sessions(session_manager, owner: Optional[str] = None) -> tuple[int, int, float]:
     """
     Perform complete cleanup operations with error recovery.
 

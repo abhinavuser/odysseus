@@ -24,7 +24,7 @@ class SearchResult:
 class SearchResponse:
     """Response from a search query."""
     query: str
-    results: List[SearchResult]
+    results: list[SearchResult]
     total: int
     cached: bool = False
 
@@ -97,6 +97,6 @@ class SearchService:
         """Fetch content from a URL."""
         return await fetch_webpage_content(url)
 
-    def get_config(self) -> Dict[str, Any]:
+    def get_config(self) -> dict[str, Any]:
         """Get current search configuration."""
         return get_search_config()
